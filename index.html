@@ -1,1 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Guild Glory | Free Fire Guild</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff0000;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff4d4d;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: white;
+            text-shadow: 0 0 10px white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #ff0000;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ff0000;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-btn {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0 5%;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ff0000" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            z-index: 1;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #ff0000, #ff4d4d, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+        }
+
+        .glow-text {
+            color: #ff0000;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+        }
+
+        .cta-button {
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #ff0000, #ff4d4d);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            transition: all 0.3s;
+            min-width: 200px;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+            border-color: #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 10%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #ff0000;
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 10%;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff0000, transparent);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .feature-description {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 5rem 10%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 250px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(255, 0, 0, 0.8), transparent);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-title {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 10%;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 0, 0, 0.2);
+            transform: translateX(10px);
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: #ff0000;
+        }
+
+        .contact-text {
+            color: #ccc;
+        }
+
+        .contact-form {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, #ff0000, #ff4d4d);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: black;
+            padding: 3rem 10% 1rem;
+            border-top: 2px solid #ff0000;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #ff0000;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-section p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: #ff0000;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #ff0000;
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                gap: 1rem;
+            }
+
+            .stat-item {
+                min-width: 150px;
+                padding: 1rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">FF<span>GLORY</span></div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="menu-btn">☰</div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>FREE FIRE GUILD</h1>
+            <h1 class="glow-text">GLORY</h1>
+            <p>Join the most powerful guild in Free Fire history! <br> <span class="glow-text">#GLORYFOREVER</span></p>
+            <button class="cta-button" onclick="joinGuild()">JOIN NOW</button>
+            
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Active Members</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Tournaments Won</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Active Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <h2 class="section-title">ABOUT US</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Welcome to <span class="glow-text">FF Guild Glory</span> - Where Legends Are Born!</p>
+                <p>We are not just a guild, we are a family of passionate Free Fire players who eat, sleep, and breathe gaming. Our journey started in 2020 with just 5 members, and today we are 500+ strong!</p>
+                <p>What makes us different? We don't just play - we dominate. Every member here is trained to be the best, supported by pro players, and given the resources to shine in every tournament.</p>
+                <p>Join us and become part of the <span class="glow-text">GLORY</span> family! 🎮</p>
+            </div>
+            <div class="about-image">
+                <img src="https://via.placeholder.com/600x400/ff0000/000000?text=FF+GUILD+GLORY" alt="Guild Image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">WHY CHOOSE US?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">Pro Training</h3>
+                <p class="feature-description">Get trained by top Free Fire players. Learn advanced strategies, movement, and aim techniques.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3 class="feature-title">Daily Tournaments</h3>
+                <p class="feature-description">Participate in daily scrims and weekly tournaments with real cash prizes and rewards.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3 class="feature-title">Active Community</h3>
+                <p class="feature-description">24/7 active Discord server with helpful members, team finder, and gaming sessions.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎮</div>
+                <h3 class="feature-title">Guild Events</h3>
+                <p class="feature-description">Exclusive guild events, fun games, and opportunities to win exciting prizes every week.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">Performance Tracking</h3>
+                <p class="feature-description">Get detailed analysis of your gameplay and personalized tips to improve your rank.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3 class="feature-title">Team Support</h3>
+                <p class="feature-description">Always find squad members for ranked matches and scrims. Never play alone!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <h2 class="section-title">GUILD GALLERY</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/400x250/ff0000/000000?text=Tournament+Win+1" alt="Gallery 1">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Tournament Win 2024</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/400x250/ff4d4d/000000?text=Guild+Meetup" alt="Gallery 2">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Guild Meetup</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/400x250/ff0000/000000?text=Champions" alt="Gallery 3">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Champions Squad</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/400x250/ff4d4d/000000?text=Practice+Session" alt="Gallery 4">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Practice Session</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/400x250/ff0000/000000?text=Reward+Ceremony" alt="Gallery 5">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Reward Ceremony</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/400x250/ff4d4d/000000?text=Guild+Party" alt="Gallery 6">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Guild Party</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2 class="section-title">JOIN THE GLORY</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3 style="color: #ff0000; margin-bottom: 2rem;">Connect With Us</h3>
+                
+                <div class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <div class="contact-text">
+                        <strong>Discord:</strong> FFGlory#1234
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <div class="contact-text">
+                        <strong>Email:</strong> glory@ffguild.com
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <div class="contact-text">
+                        <strong>Instagram:</strong> @ffglory
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <div class="contact-text">
+                        <strong>Telegram:</strong> t.me/ffglory
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <div class="contact-text">
+                        <strong>WhatsApp:</strong> +91 98765 43210
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h4 style="color: #ff0000; margin-bottom: 1rem;">Guild Requirements:</h4>
+                    <ul style="color: #ccc; list-style: none;">
+                        <li>✓ Level 50+ account</li>
+                        <li>✓ 2.0+ K/D ratio</li>
+                        <li>✓ Active player (daily)</li>
+                        <li>✓ Team player attitude</li>
+                        <li>✓ Discord mandatory</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <h3 style="color: #ff0000; margin-bottom: 2rem;">Apply Now</h3>
+                <form id="guildForm" onsubmit="return submitForm(event)">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Free Fire IGN" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" placeholder="Free Fire UID" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" placeholder="Your Level" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="K/D Ratio" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Discord ID" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Why do you want to join FF Glory?" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">SUBMIT APPLICATION</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>FF GLORY</h3>
+                <p>India's fastest growing Free Fire guild. Join us and become part of the glory family!</p>
+                <div class="social-links">
+                    <a href="#">📱</a>
+                    <a href="#">📧</a>
+                    <a href="#">🎮</a>
+                    <a href="#">💬</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Guild Rules</h3>
+                <ul>
+                    <li><a href="#">Code of Conduct</a></li>
+                    <li><a href="#">Ranking System</a></li>
+                    <li><a href="#">Tournament Rules</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Report Issue</a></li>
+                    <li><a href="#">Contact Admin</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2024 FF Guild Glory. All rights reserved. | Made with ❤️ for Free Fire players</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.querySelector('.menu-btn').addEventListener('click', function() {
+            alert('Mobile menu coming soon! For now, use desktop view for best experience.');
+        });
+
+        // Smooth Scroll for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Join Guild Function
+        function joinGuild() {
+            alert('🚀 Welcome to FF Guild Glory!\n\nPlease fill the application form below to join us.\nOur team will contact you within 24 hours!');
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Form Submission
+        function submitForm(event) {
+            event.preventDefault();
+            alert('✅ Application submitted successfully!\n\nThank you for applying to FF Guild Glory. Our recruitment team will review your application and contact you on Discord within 24-48 hours.\n\n#GLORYFOREVER 🎮');
+            document.getElementById('guildForm').reset();
+            return false;
+        }
+
+        // Animated Counter for Stats
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                element.innerHTML = Math.floor(progress * (end - start) + start) + '+';
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Trigger animation when stats come into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumbers = document.querySelectorAll('.stat-number');
+                    animateValue(statNumbers[0], 0, 500, 2000);
+                    animateValue(statNumbers[1], 0, 100, 2000);
+                    animateValue(statNumbers[2], 0, 247, 2000);
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        observer.observe(document.querySelector('.stats'));
+
+        // Add parallax effect to hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Dynamic year in footer
+        document.querySelector('.copyright p').innerHTML = `© ${new Date().getFullYear()} FF Guild Glory. All rights reserved. | Made with ❤️ for Free Fire players`;
+    </script>
+</body>
+</html>
